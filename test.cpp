@@ -1,14 +1,24 @@
 #include <iostream>
+#include <utility>
 #include <string>
-#include <sstream>
+#include <tuple>
+#include <map>
+#include <vector>
+
+template <typename T>
+struct sum {
+    T value;
+
+    template <typename ... Ts>
+    sum(Ts&& ... values) : value{(values + ...)} {}
+};
+
+template <typename ... Ts>
+sum(Ts&& ... values) -> sum<std::common_type_t<Ts...>>;
 
 int main(int argc, char* argv[])
 {
-    std::string helloWorldSTr = "Hello world";
-    std::cout  << helloWorldSTr << std::endl;
-
-    std::stringstream ss;
-    ss << "One " << "2 " << 3;
-    std::cout << ss.str() << std::endl;
+    sum s {1,2.0f,3u};
+    std::cout << s.value << std::endl;
     return 0;
 }
