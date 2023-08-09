@@ -4,21 +4,47 @@
 #include <tuple>
 #include <map>
 #include <vector>
+#include <type_traits>
 
 template <typename T>
-struct sum {
-    T value;
+class addable
+{
+    T _value;
+public:
+    addable(T v) : _value{v} {}
+    
+//     template <typename U>
+//     T add(U x) const {
+//         return _value + x;
+//     }
 
-    template <typename ... Ts>
-    sum(Ts&& ... values) : value{(values + ...)} {}
+//     template <typename U>
+//     T add(U x) {
+//         auto copy(_value);
+//         for (auto& n : copy ) {
+//             n += x;
+//         }
+//         return copy;
+//     }
+
+    template <typename U>
+    T add(U x) {
+        if constexpr ( std::is_same_v<T, std::vector<U>> ) {
+                    auto copy(_value);
+        for (auto& n : copy ) {
+            n += x;
+        }
+        return copy;
+        }
+        else {
+            return _value + x;
+        }
+    }
+
 };
-
-template <typename ... Ts>
-sum(Ts&& ... values) -> sum<std::common_type_t<Ts...>>;
 
 int main(int argc, char* argv[])
 {
-    sum s {1,2.0f,3u};
-    std::cout << s.value << std::endl;
+    addable<int>{1}.add(2);
     return 0;
 }
