@@ -9,6 +9,7 @@
 #include <cassert>
 
 #include "sorts.h"
+#include "trees.h"
 
 template <typename T>
 class addable
@@ -60,88 +61,48 @@ SomeStruct foo() {
     return SomeStruct{};
 }
 
+static void print(int n)
+{
+    if (n < 0)
+        return;
+    std::cout << " " << n;
+  
+    // The last executed statement is recursive call
+    print(n - 1);
+}
+
 int main(int argc, char* argv[])
 {
-    // addable<int>{1}.add(2);
-    // addable<std::vector<int>>{ std::vector<int> {1,2,3} }.add(10);
+    std::cout << "Test tree" << std::endl;
+    auto root = std::make_shared<Node>(7,7);
+    InsertNode(root,5,5);
+    InsertNode(root,4,4);
+    InsertNode(root,8,8);
+    InsertNode(root,6,6);
+    PrintTree(root);
+    auto found = Search(root, 106);
+    if (found)
+        std::cout << "found: value = " << found->_value << "; key = " << found->_key << std::endl;
+    else
+        std::cout << "No element" << std::endl;
 
-    // SomeStruct ss;
-    // for (const auto& val : ss._someVec)
-    // std::cout << val << std::endl;
+    DeleteNode(root, 5);
+    PrintTree(root);
 
-    for (const auto& obj: foo()._someVec)
-        std::cout << obj << std::endl;
+    // auto findMax = GetMaxNode(root);
+    // auto findMin = GetMinNode(root);
 
-    std::cout << "---" << std::endl;
+    // if (findMax)
+    //     std::cout << "findMax = " << findMax->_key << std::endl;
+    // else
+    //     std::cout << "No max" << std::endl;
 
-    std::variant<int, float> _someVariant {1};
-    // try
-    // {
-    //     std::get<float>(_someVariant);
-    // }
-    // catch(const std::bad_variant_access& e)
-    // {
-    //     std::cerr << e.what() << '\n';
-    // }
+    // if (findMin)
+    //     std::cout << "findMin = " << findMin->_key << std::endl;
+    // else
+    //     std::cout << "No min" << std::endl;
     
-    auto _var = std::get<0>(_someVariant); 
-    std::cout << _var << std::endl;
-
-const char* s1 = R"foo(
-Hello
-  World
-)foo";
-    std::cout << R"foo("Hi")foo" << std::endl;
-
-    int arr_bubble[] {5,2,1,4,2,3};
-    std::cout << "-----" << std::endl; 
-    for(const auto& val : arr_bubble)
-        std::cout << val << " "; 
-    BubbleSort(arr_bubble, std::size(arr_bubble));
-    std::cout << std::endl;
-    for(const auto& val : arr_bubble)
-        std::cout << val << " ";
-    std::cout << std::endl;
-
-    int arr_selection[] {5,2,1,4,3,2};
-    std::cout << "-----" << std::endl; 
-    for(const auto& val : arr_selection)
-        std::cout << val << " "; 
-    SelectionSort(arr_selection, std::size(arr_selection));
-    std::cout << std::endl;
-    for(const auto& val : arr_selection)
-        std::cout << val << " ";
-    std::cout << std::endl;
-
-    int arr_insertion[] {5,2,1,4,3,2};
-    std::cout << "-----" << std::endl; 
-    for(const auto& val : arr_insertion)
-        std::cout << val << " "; 
-    InsertionSort(arr_insertion, std::size(arr_insertion));
-    std::cout << std::endl;
-    for(const auto& val : arr_insertion)
-        std::cout << val << " ";
-    std::cout << std::endl;
-
-    int arr_quick[] {4,7,2,5,9,4,3,2};
-    std::cout << "-----" << std::endl; 
-    for(const auto& val : arr_quick)
-        std::cout << val << " "; 
-    QuickSortHoara(arr_quick, std::size(arr_quick));
-    std::cout << std::endl;
-    for(const auto& val : arr_quick)
-        std::cout << val << " ";
-    std::cout << std::endl;
-
-    int arr_quick_l[] {4,7,2,5,9,4,3,2};
-    std::cout << "-----" << std::endl; 
-    for(const auto& val : arr_quick_l)
-        std::cout << val << " "; 
-    QuickSortLomuto(arr_quick_l, std::size(arr_quick_l));
-    std::cout << std::endl;
-    for(const auto& val : arr_quick_l)
-        std::cout << val << " ";
-    std::cout << std::endl;
+    print(5);
 
     return 0;
 }
